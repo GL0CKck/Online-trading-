@@ -1,0 +1,17 @@
+{% extends "layout/basic.html" %}
+{% block title %}Страница входа{% endblock %}
+
+{% block content %}
+<h2>LOGIN</h2>
+{% if user.authenticated %}
+<p>Вы уже авторизировались</p>
+{% else %}
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="next" value="{{next}}">
+    <input type="submit" value="Войти">
+</form>
+
+{% endif %}
+{% endblock %}

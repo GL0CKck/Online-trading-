@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>{% block title %} Главная {% endblock %} :: Доска объявления</title>
+    <link rel="stylesheet"  type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+<header>
+    <h1>Объявления</h1>
+
+</header>
+<nav>
+
+
+    {% if not user.is_authenticated %}
+    <a href="{% url 'login' %}">Войти</a>
+    {% else %}
+    <a href="{% url 'password_change' %}">Смена пароля</a>
+    <br>
+    <a href="{% url 'logout' %}">Выйти</a>
+    {% endif %}
+    <br>
+    <a href="{% url 'index' %}">Главная</a>
+    <br>
+    <a href="{% url 'add' %}">Добавить</a>
+    <br>
+    <a href="{% url 'add_rubrics' %}">Добавить рубрику</a>
+    <br>
+
+    {% for rubric in rubrics %}
+    <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
+    {% endfor %}
+</nav>
+<section>
+    {% block content %}
+    {% endblock %}
+</section>
+
+</body>
+</html>

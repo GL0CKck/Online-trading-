@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect,JsonResponse
 from django.shortcuts import render,redirect
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 from .models import Bb,Rubric
 from django.urls import reverse
@@ -13,7 +13,9 @@ from django.forms.formsets import ORDERING_FIELD_NAME
 from django.contrib.messages.views import SuccessMessageMixin
 from .serializers import RubricSerializer, BbSerializer
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, generics
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly, IsAuthenticatedOrReadOnly
 
 # def add_rubrics(request):
 #     if request.method == "POST":
@@ -107,6 +109,7 @@ def rubrics(request):
         return render(request,'bboard/delete_rub.html',context)
 
 @api_view(['GET','POST'])
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def api_rubrics(request):
     if request.method=='GET':
         rubrics=Rubric.objects.all()
@@ -120,6 +123,7 @@ def api_rubrics(request):
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST'])
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def api_bb(request):
     if request.method=='GET':
         bb=Bb.objects.all()
@@ -134,6 +138,7 @@ def api_bb(request):
 
 
 @api_view(['GET','PUT','PATCH','DELETE'])
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def api_rubric_detail(request,pk):
     rubric = Rubric.objects.get(pk=pk)
     if request.method=='GET':
@@ -150,6 +155,7 @@ def api_rubric_detail(request,pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET','PUT','PATCH','DELETE'])
+@permission_classes((IsAuthenticatedOrReadOnly,))
 def api_bb_detail(request,pk):
     bb=Bb.objects.get(pk=pk)
     if request.method == 'GET':
@@ -166,7 +172,21 @@ def api_bb_detail(request,pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
+# class APIRubrics(generics.ListCreateAPIView):
+#     queryset = Rubric.objects.all()
+#     serializer_class = RubricSerializer
+#
+# class APIRubricDetail(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Rubric.objects.all()
+#     serializer_class = RubricSerializer
+#
+# class APIRubricViewSet(ModelViewSet):
+#     queryset = Rubric.objects.all()
+#     serializer_class = RubricSerializer
+#
+# class APIBBViewSet(ModelViewSet):
+#     queryset = Bb.objects.all()
+#     serializer_class = BbSerializer
 
 
 

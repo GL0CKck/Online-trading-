@@ -1,12 +1,22 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth.views import LoginView,LogoutView,PasswordChangeView
 from .views import index, by_rubric, add_and_save, bb_delete, BbCreateView,rubrics
 from .views import api_rubrics,api_bb,api_rubric_detail,api_bb_detail
+    #, APIRubrics, APIRubricDetail, APIRubricViewSet,APIBBViewSet
+from rest_framework.routers import DefaultRouter
+# router =DefaultRouter()
+# router.register('rubrics', APIRubricViewSet)
+
+
 
 
 urlpatterns = [
+
+    # path('api/',include(router.urls)),
+    # path('api/rubricc/<int:pk>/',APIRubricDetail.as_view()),
+    # path('api/rubriccs/',APIRubrics.as_view()),
     path('api/bb/<int:pk>/',api_bb_detail),
-    path('api/rubric/<int:pk>/',api_rubric_detail),
+    path('api/rubrics/<int:pk>/',api_rubric_detail),
     path('api/rubrics/',api_rubrics),
     path('api/bb/',api_bb),
     path('',index,name='index'),

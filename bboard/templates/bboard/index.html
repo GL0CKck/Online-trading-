@@ -1,12 +1,17 @@
 {% extends 'layout/basic.html' %}
 
 {% block content %}
+{% if not user.is_authenticated %}
+<p>Hello dear guest</p>
+{% endif %}
 {% if user.is_authenticated %}
 <p>Hello dear {{ user.username }}</p>
 {% endif %}
 {% for bb in bbs %}
 <div>
+    {% if user.is_authenticated %}
     <a href="{% url 'bb_delete' bb.pk %}">Удалить</a>
+    {% endif %}
 
 
 

@@ -25,10 +25,12 @@
     <br>
     <a href="{% url 'index' %}">Главная</a>
     <br>
+    {% if user.is_authenticated %}
     <a href="{% url 'add' %}">Добавить</a>
     <br>
     <a href="{% url 'add_rubrics' %}">Добавить рубрику</a>
     <br>
+    {% endif %}
 
     {% for rubric in rubrics %}
     <a href="{% url 'by_rubric' rubric.pk %}">{{ rubric.name }}</a>
